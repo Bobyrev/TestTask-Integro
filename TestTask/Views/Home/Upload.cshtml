@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = null;
+}
+
+@model Dictionary<int, DataRow>;
+@using System.Data;
+@using Microsoft.AspNetCore.Http;
+
+@if (Model != null && Model.Count != 0)
+{
+    @using (Html.BeginForm("Result", "Home", FormMethod.Post))
+    {
+        <input type="submit" value="Сформировать отчет" />
+        <table border="1px solid black">
+            <tbody>
+                @{
+                    DataColumnCollection columns = Model.First().Value.Table.Columns;
+                    for (int i = 0; i < Model.Keys.Count; i++)
+                    {
+                        <tr>
+                            <td><input name="selected" type="checkbox" value="@Model.Keys.ElementAt(i)" /></td>
+                            @foreach (DataColumn col in columns)
+                            {
+                                <td>@Model.Values.ElementAt(i)[col.ColumnName]</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+}
